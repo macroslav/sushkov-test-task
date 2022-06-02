@@ -22,4 +22,4 @@ class Saver:
         """
         for task, result in self.solutions.items():
             result.to_csv(f"{DATA_DIR}/results/{task}_solution.csv", index=False)
-        logging.debug('All results dataframes are saved')
+        logging.debug(f'All results dataframes are successfully saved in {DATA_DIR}/results/')
