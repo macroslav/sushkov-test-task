@@ -12,16 +12,16 @@ logger.setLevel(logging.DEBUG)
 
 parser = argparse.ArgumentParser(description='main arguments parser')
 parser.add_argument('--show_results',
-                    type=int,
-                    default=0,
-                    help=''' Argument for show results or not, allowed values 0 or 1'''
+                    type=str,
+                    default='false',
+                    help=''' Argument for show results or not, allowed values true or false'''
                     )
 args = parser.parse_args()
 
 logging.debug('Arguments are parsed')
 
 
-def main(show: int):
+def main(show: str):
     results = {}
 
     products_path = Path(f'{DATA_DIR}/{PRODUCTS_PATH}')
@@ -49,12 +49,10 @@ def main(show: int):
     saver = Saver(results)
     saver.save()
 
-    if show:
+    if show == 'true':
         for dataframe in results.values():
             print(dataframe)
 
 
 if __name__ == '__main__':
     main(args.show_results)
-
-print(args.show_results)
