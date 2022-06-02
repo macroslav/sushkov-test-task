@@ -2,15 +2,17 @@ from paths import DATA_DIR, PRODUCTS_PATH, SALES_PATH
 from task_solvers import solve_first_task, solve_second_task, solve_third_task
 from saver import Saver
 from data_loader import DataLoader
+
 import logging
+from pathlib import Path
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 results = {}
 
-products_path = f'{DATA_DIR}/{PRODUCTS_PATH}'
-sales_path = f'{DATA_DIR}/{SALES_PATH}'
+products_path = Path(f'{DATA_DIR}/{PRODUCTS_PATH}')
+sales_path = Path(f'{DATA_DIR}/{SALES_PATH}')
 
 loader = DataLoader(products_path=products_path,
                     sales_path=sales_path)

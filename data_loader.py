@@ -2,6 +2,7 @@ import pandas as pd
 
 from typing import Tuple
 import logging
+from pathlib import Path
 
 
 def convert_to_float(excel_float: str):
@@ -22,7 +23,7 @@ def convert_to_float(excel_float: str):
 class DataLoader:
     """ Class for loading and basic preprocessing data from .csv files"""
 
-    def __init__(self, products_path: str, sales_path: str) -> None:
+    def __init__(self, products_path: Path, sales_path: Path) -> None:
         """ Initialize DataLoader
 
         :param products_path: path to products.csv
