@@ -12,8 +12,9 @@ results = {}
 products_path = f'{DATA_DIR}/{PRODUCTS_PATH}'
 sales_path = f'{DATA_DIR}/{SALES_PATH}'
 
-sales_data, products_data, common_data = DataLoader(products_path=products_path,
-                                                    sales_path=sales_path).load()
+loader = DataLoader(products_path=products_path,
+                    sales_path=sales_path)
+sales_data, products_data, common_data = loader()
 
 results['first_task'] = solve_first_task(common_data, products_data)
 results['second_task'] = solve_second_task(common_data)

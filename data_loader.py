@@ -36,6 +36,9 @@ class DataLoader:
         self.sales_df = None
         self.common_df = None
 
+    def __call__(self):
+        return self.load()
+
     def load(self) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """ Load data and preprocess it
 
