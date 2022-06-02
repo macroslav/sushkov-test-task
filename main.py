@@ -3,35 +3,58 @@ from task_solvers import solve_first_task, solve_second_task, solve_third_task
 from saver import Saver
 from data_loader import DataLoader
 
+import argparse
 import logging
 from pathlib import Path
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-results = {}
+parser = argparse.ArgumentParser(description='main arguments parser')
+parser.add_argument('--show_results',
+                    type=int,
+                    default=0,
+                    help=''' Argument for show results or not, allowed values 0 or 1'''
+                    )
+args = parser.parse_args()
 
-products_path = Path(f'{DATA_DIR}/{PRODUCTS_PATH}')
-sales_path = Path(f'{DATA_DIR}/{SALES_PATH}')
+logging.debug('Arguments are parsed')
 
-loader = DataLoader(products_path=products_path,
-                    sales_path=sales_path)
-sales_data, products_data, common_data = loader()
 
-results['first_task'] = solve_first_task(common_data, products_data)
-results['second_task'] = solve_second_task(common_data)
+def main(show: int):
+    results = {}
 
-additional_orders_df = common_data[common_data.additional_order == 1].copy()
+    products_path = Path(f'{DATA_DIR}/{PRODUCTS_PATH}')
+    sales_path = Path(f'{DATA_DIR}/{SALES_PATH}')
 
-number_of_orders_df = common_data.groupby('customer_id', as_index=False) \
-    .agg(number_of_customer_orders=('order_id', 'nunique')) \
-    .sort_values(by='number_of_customer_orders', ascending=False)
+    loader = DataLoader(products_path=products_path,
+                        sales_path=sales_path)
+    sales_data, products_data, common_data = loader()
 
-additional_orders_df = additional_orders_df.merge(number_of_orders_df, how='left')
+    results['first_task'] = solve_first_task(common_data, products_data)
+    results['second_task'] = solve_second_task(common_data)
 
-more_than_2_orders_df = additional_orders_df[additional_orders_df.number_of_customer_orders > 2]
+    additional_orders_df = common_data[common_data.additional_order == 1].copy()
 
-results['third_task'] = solve_third_task(more_than_2_orders_df)
+    number_of_orders_df = common_data.groupby('customer_id', as_index=False) \
+        .agg(number_of_customer_orders=('order_id', 'nunique')) \
+        .sort_values(by='number_of_customer_orders', ascending=False)
 
-saver = Saver(results)
-saver.save()
+    additional_orders_df = additional_orders_df.merge(number_of_orders_df, how='left')
+
+    more_than_2_orders_df = additional_orders_df[additional_orders_df.number_of_customer_orders > 2]
+
+    results['third_task'] = solve_third_task(more_than_2_orders_df)
+
+    saver = Saver(results)
+    saver.save()
+
+    if show:
+        for dataframe in results.values():
+            print(dataframe)
+
+
+if __name__ == '__main__':
+    main(args.show_results)
+
+print(args.show_results)
