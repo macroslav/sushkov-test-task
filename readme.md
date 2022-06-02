@@ -7,7 +7,7 @@
 
 ## __Для запуска решения из терминала:__  
 ```shell
-    python3 main.py --show_results=VALUE
+python3 main.py --show_results=VALUE
 ```
 
 __VALUE__ принимает значения true или false: 
